@@ -1,9 +1,8 @@
 <template>
   <div class="container">
     <div class="card">
-      <h1 class="title">Crie sua conta</h1>
+      <h1 class="title">Entre na sua conta</h1>
       <form class="form">
-        <q-input v-model="userData.name" label="Nome" dark />
         <q-input v-model="userData.email" label="E-mail" dark />
         <q-input v-model="userData.password" label="Senha" dark />
       </form>
@@ -11,12 +10,12 @@
         :loading="loading[0]"
         color="primary"
         @click="simulateProgress(0)"
-        label="Cadastrar"
+        label="Entrar"
         type="submit"
       />
       <footer class="footer">
-        <span class="text">Já possui uma conta?</span>
-        <a href="/#/signin" class="link">Entre aqui!</a>
+        <span class="text">Ainda não possui uma conta?</span>
+        <a href="/#/signup" class="link">Entre aqui!</a>
       </footer>
     </div>
   </div>
@@ -25,7 +24,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-const userData = ref({ name: '', email: '', password: '' });
+const userData = ref({ email: '', password: '' });
 
 const loading = ref([false]);
 

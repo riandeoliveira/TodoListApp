@@ -7,7 +7,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/signin',
-    component: () => import('layouts/MainLayout.vue'),
+    component: () => import('pages/SignIn.vue'),
   },
   {
     path: '/:catchAll(.*)*',
