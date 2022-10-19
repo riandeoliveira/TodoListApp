@@ -37,7 +37,7 @@ function simulateProgress(number: number) {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .container {
   background-color: #101010;
   height: 100vh;
