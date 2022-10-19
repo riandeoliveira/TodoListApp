@@ -10,7 +10,7 @@
       <q-btn
         :loading="loading[0]"
         color="primary"
-        @click="simulateProgress(0)"
+        @click="createUser"
         label="Cadastrar"
         type="submit"
       />
@@ -23,22 +23,35 @@
 </template>
 
 <script setup lang="ts">
+import { api } from 'src/boot/axios';
 import { ref } from 'vue';
 
 const userData = ref({ name: '', email: '', password: '' });
 
 const loading = ref([false]);
 
-function simulateProgress(number: number) {
-  loading.value[number] = true;
+const createUser = async () => {
+  try {
+    await api.post('/users', userData.value);
 
-  setTimeout(() => {
-    loading.value[number] = false;
-  }, 3000);
-}
+    alert('Usuário criado com sucesso!');
+  } catch (err: unknown) {
+    alert('Erro ao cadastrar um novo usuário. Por favor tente novamente!');
+
+    console.log(err);
+  }
+};
+
+// async function simulateProgress(number: number) {
+//   loading.value[number] = true;
+
+//   setTimeout(() => {
+//     loading.value[number] = false;
+//   }, 3000);
+// }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .container {
   background-color: #101010;
   height: 100vh;
