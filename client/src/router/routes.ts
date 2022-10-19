@@ -10,6 +10,10 @@ const routes: RouteRecordRaw[] = [
     component: () => import('pages/SignIn.vue'),
   },
   {
+    path: '/todos',
+    component: () => import('pages/TodosPage.vue'),
+  },
+  {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue'),
   },
