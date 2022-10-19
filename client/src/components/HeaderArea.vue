@@ -1,0 +1,44 @@
+<template>
+  <header class="header">
+    <nav class="nav">
+      <q-btn flat round title="Pesquise uma tarefa" class="button">
+        <IconBase :name="search" />
+      </q-btn>
+      <q-btn flat round title="Entre na sua conta" class="button">
+        <IconBase :name="account" />
+      </q-btn>
+      <q-btn flat round title="Filtre suas tarefas" class="button">
+        <IconBase :name="filter" />
+      </q-btn>
+    </nav>
+  </header>
+</template>
+
+<script setup lang="ts">
+import { search, account, filter } from '../data/icons.json';
+import IconBase from 'components/IconBase.vue';
+</script>
+
+<style scoped lang="scss">
+.header {
+  background-color: #1976d2;
+  top: 0;
+  position: fixed;
+  right: 0;
+  left: 0;
+  height: 40px;
+}
+
+.nav {
+  width: inherit;
+  height: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.button {
+  min-height: 2.5em;
+  min-width: 2.5em;
+}
+</style>
