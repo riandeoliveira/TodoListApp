@@ -9,13 +9,13 @@
           <IconBase :name="check_list" />
         </a>
       </q-btn>
-      <q-btn flat round title="Filtre suas tarefas" class="button">
-        <IconBase :name="filter" />
-      </q-btn>
       <q-btn flat round title="Entre na sua conta" class="button">
         <a href="/#/account" class="link">
           <IconBase :name="account" />
         </a>
+      </q-btn>
+      <q-btn flat round title="Filtre suas tarefas" class="button">
+        <IconBase :name="filter" />
       </q-btn>
     </nav>
   </header>
