@@ -2,7 +2,8 @@
   <div class="container">
     <HeaderArea />
     <main class="main">
-      <div class="todo-list">
+      <FilterModal v-if="filterModal.$state.isOpen" />
+      <div class="todo-list" :class="filterModal.$state.isOpen ? 'opac' : ''">
         <TodoBox
           v-for="todo in todoList.$state"
           :key="todo.id"
@@ -10,7 +11,6 @@
           :completed="todo.completed"
         />
       </div>
-      <FilterModal v-if="filterModal.$state.isOpen" />
     </main>
     <FooterArea />
   </div>
@@ -42,5 +42,9 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.opac {
+  opacity: 20%;
 }
 </style>

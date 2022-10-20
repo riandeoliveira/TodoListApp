@@ -33,6 +33,7 @@ const handleFilterClick = (filter: IFilter): void => {
   border-radius: 10px;
   position: fixed;
   right: 16px;
+  z-index: 2;
   width: 60%;
   border: 1px solid #1976d2;
 }
