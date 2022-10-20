@@ -2,20 +2,20 @@
   <header class="header">
     <nav class="nav">
       <q-btn flat round title="Pesquise uma tarefa" class="button">
-        <IconBase :name="search" />
+        <IconBase :name="search" :size="24" />
       </q-btn>
       <q-btn flat round title="Visualize suas tarefas" class="button">
         <a href="/#/todos" class="link">
-          <IconBase :name="check_list" />
+          <IconBase :name="check_list" :size="24" />
         </a>
       </q-btn>
       <q-btn flat round title="Entre na sua conta" class="button">
         <a href="/#/account" class="link">
-          <IconBase :name="account" />
+          <IconBase :name="account" :size="24" />
         </a>
       </q-btn>
       <q-btn flat round title="Filtre suas tarefas" class="button">
-        <IconBase :name="filter" @click="handleFilterModalClick" />
+        <IconBase :name="filter" :size="24" @click="handleFilterModalClick" />
       </q-btn>
     </nav>
   </header>

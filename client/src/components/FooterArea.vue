@@ -2,7 +2,7 @@
   <footer class="footer">
     <nav class="nav">
       <q-btn flat round title="Adicione uma nova tarefa" class="button">
-        <IconBase :name="add_todo" />
+        <IconBase :name="add_todo" :size="24" />
       </q-btn>
     </nav>
   </footer>
