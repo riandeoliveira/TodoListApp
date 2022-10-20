@@ -15,7 +15,7 @@
         </a>
       </q-btn>
       <q-btn flat round title="Filtre suas tarefas" class="button">
-        <IconBase :name="filter" />
+        <IconBase :name="filter" @click="handleFilterClick" />
       </q-btn>
     </nav>
   </header>
@@ -24,6 +24,15 @@
 <script setup lang="ts">
 import { search, check_list, filter, account } from '../data/icons.json';
 import IconBase from 'components/IconBase.vue';
+import { useFilterModalStore } from 'stores/useFilterModalStore';
+
+const filterModal = useFilterModalStore();
+
+const handleFilterClick = (): void => {
+  if (location.hash !== '#/todos') location.hash = '/todos';
+
+  filterModal.toggle();
+};
 </script>
 
 <style scoped lang="scss">
@@ -51,5 +60,6 @@ import IconBase from 'components/IconBase.vue';
 
 .link {
   display: flex;
+  outline: 0;
 }
 </style>

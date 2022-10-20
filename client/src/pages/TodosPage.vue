@@ -2,7 +2,7 @@
   <div class="container">
     <HeaderArea />
     <main class="main">
-      <FilterModal />
+      <FilterModal v-if="filterModal.$state.isOpen" />
     </main>
     <FooterArea />
   </div>
@@ -10,8 +10,11 @@
 
 <script setup lang="ts">
 import HeaderArea from 'components/HeaderArea.vue';
-import FooterArea from 'src/components/FooterArea.vue';
-import FilterModal from 'src/components/FilterModal.vue';
+import FooterArea from 'components/FooterArea.vue';
+import FilterModal from 'components/FilterModal.vue';
+import { useFilterModalStore } from 'stores/useFilterModalStore';
+
+const filterModal = useFilterModalStore();
 </script>
 
 <style lang="scss">
