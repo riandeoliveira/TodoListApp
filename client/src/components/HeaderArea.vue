@@ -15,7 +15,7 @@
         </a>
       </q-btn>
       <q-btn flat round title="Filtre suas tarefas" class="button">
-        <IconBase :name="filter" @click="handleFilterClick" />
+        <IconBase :name="filter" @click="handleFilterModalClick" />
       </q-btn>
     </nav>
   </header>
@@ -28,7 +28,7 @@ import { useFilterModalStore } from 'stores/useFilterModalStore';
 
 const filterModal = useFilterModalStore();
 
-const handleFilterClick = (): void => {
+const handleFilterModalClick = (): void => {
   if (location.hash !== '#/todos') location.hash = '/todos';
 
   filterModal.toggle();

@@ -2,14 +2,28 @@
   <div class="container">
     <span class="text">Filtrar tarefas por:</span>
     <ul class="list">
-      <li class="item">Mais antigas</li>
-      <li class="item">Mais recentes</li>
-      <li class="item">Ordem alfabética</li>
-      <li class="item">Concluídas</li>
-      <li class="item">Pendentes</li>
+      <li
+        class="item"
+        :class="filter.selected ? 'selected' : ''"
+        v-for="filter in filters.$state"
+        :key="filter.id"
+        @click="handleFilterClick(filter)"
+      >
+        {{ filter.name }}
+      </li>
     </ul>
   </div>
 </template>
+
+<script setup lang="ts">
+import { useFilterStore, IFilter } from 'stores/useFilterStore';
+
+const filters = useFilterStore();
+
+const handleFilterClick = (filter: IFilter): void => {
+  filters.select(filter);
+};
+</script>
 
 <style scoped lang="scss">
 .container {
@@ -37,5 +51,9 @@
 .item {
   cursor: pointer;
   padding: 10px;
+}
+
+.selected {
+  background-color: #1976d2;
 }
 </style>
