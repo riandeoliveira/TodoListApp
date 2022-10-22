@@ -7,6 +7,7 @@
         <TodoBox
           v-for="todo in todoList.$state"
           :key="todo.id"
+          :id="todo.id"
           :name="todo.name"
           :completed="todo.completed"
         />

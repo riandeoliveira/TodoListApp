@@ -1,20 +1,51 @@
 <template>
   <header class="header">
     <nav class="nav">
-      <q-btn flat round title="Pesquise uma tarefa" class="button">
+      <q-btn
+        flat
+        round
+        title="Pesquise uma tarefa"
+        class="button"
+        @click="handleSearchField"
+      >
         <IconBase :name="search" :size="24" />
       </q-btn>
-      <q-btn flat round title="Visualize suas tarefas" class="button">
+      <q-input
+        v-model="todoName"
+        dark
+        ref="inputTodoName"
+        v-if="readyToSearchTodo"
+        v-on:change="handleSearchTodo"
+      />
+      <q-btn
+        flat
+        round
+        title="Visualize suas tarefas"
+        class="button"
+        v-if="!readyToSearchTodo"
+      >
         <a href="/#/todos" class="link">
           <IconBase :name="check_list" :size="24" />
         </a>
       </q-btn>
-      <q-btn flat round title="Entre na sua conta" class="button">
+      <q-btn
+        flat
+        round
+        title="Entre na sua conta"
+        class="button"
+        v-if="!readyToSearchTodo"
+      >
         <a href="/#/account" class="link">
           <IconBase :name="account" :size="24" />
         </a>
       </q-btn>
-      <q-btn flat round title="Filtre suas tarefas" class="button">
+      <q-btn
+        flat
+        round
+        title="Filtre suas tarefas"
+        class="button"
+        v-if="!readyToSearchTodo"
+      >
         <IconBase :name="filter" :size="24" @click="handleFilterModalClick" />
       </q-btn>
     </nav>
@@ -25,6 +56,7 @@
 import { search, check_list, filter, account } from '../data/icons.json';
 import IconBase from 'components/IconBase.vue';
 import { useFilterModalStore } from 'stores/useFilterModalStore';
+import { ref, Ref } from 'vue';
 
 const filterModal = useFilterModalStore();
 
@@ -32,6 +64,22 @@ const handleFilterModalClick = (): void => {
   if (location.hash !== '#/todos') location.hash = '/todos';
 
   filterModal.toggle();
+};
+
+const readyToSearchTodo: Ref<boolean> = ref(false);
+const todoName: Ref<string> = ref('');
+const inputTodoName: Ref<HTMLInputElement | null> = ref(null);
+
+const handleSearchField = (): void => {
+  readyToSearchTodo.value = !readyToSearchTodo.value;
+
+  setTimeout(() => {
+    inputTodoName.value?.focus();
+  }, 0);
+};
+
+const handleSearchTodo = (): void => {
+  console.log('jhsd');
 };
 </script>
 

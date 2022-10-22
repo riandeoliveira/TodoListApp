@@ -4,13 +4,9 @@
       <q-btn flat round title="Adicione uma nova tarefa" class="button">
         <IconBase :name="add_todo" :size="24" @click="handleAddTodoField" />
       </q-btn>
-      <q-input
-        v-model="todoName"
-        dark
-        class="input"
-        v-if="readyToAddTodo"
-        ref="inputTodoName"
-      />
+      <form class="form" v-if="readyToAddTodo" @submit="handleAddTodo">
+        <q-input v-model="todoName" dark ref="inputTodoName" />
+      </form>
     </nav>
   </footer>
 </template>
@@ -19,10 +15,13 @@
 import IconBase from 'components/IconBase.vue';
 import { add_todo } from '../data/icons.json';
 import { Ref, ref } from 'vue';
+import { useTodoListStore } from 'src/stores/useTodoListStore';
 
 const readyToAddTodo: Ref<boolean> = ref(false);
 const todoName: Ref<string> = ref('');
 const inputTodoName: Ref<HTMLInputElement | null> = ref(null);
+
+const todoList = useTodoListStore();
 
 const handleAddTodoField = (): void => {
   readyToAddTodo.value = !readyToAddTodo.value;
@@ -30,6 +29,17 @@ const handleAddTodoField = (): void => {
   setTimeout(() => {
     inputTodoName.value?.focus();
   }, 0);
+};
+
+const handleAddTodo = (): void => {
+  if (todoName.value.trim().length === 0) {
+    alert('Digite uma tarefa primeiro');
+  } else {
+    todoList.addTodo(todoName.value);
+
+    todoName.value = '';
+    readyToAddTodo.value = false;
+  }
 };
 </script>
 
@@ -60,7 +70,7 @@ const handleAddTodoField = (): void => {
   min-width: 2.5em;
 }
 
-.input {
+.form {
   width: 100%;
 }
 </style>

@@ -2,21 +2,42 @@
 <template>
   <div class="todo-container">
     <div class="check-container">
-      <q-checkbox v-model="completed" :dark="true" />
+      <q-checkbox
+        v-model="completed"
+        :dark="true"
+        @click="handleCompleteTodo"
+      />
       <span class="todo-name">{{ name }}</span>
     </div>
-    <IconBase :name="trash_can" :size="28" class="trash-can" />
+    <IconBase
+      :name="trash_can"
+      :size="28"
+      class="trash-can"
+      @click="handleDeleteTodo"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import IconBase from './IconBase.vue';
 import { trash_can } from '../data/icons.json';
+import { useTodoListStore } from 'src/stores/useTodoListStore';
 
-defineProps<{
+const props = defineProps<{
+  id: string;
   name: string;
   completed: boolean;
 }>();
+
+const todoList = useTodoListStore();
+
+const handleCompleteTodo = (): void => {
+  todoList.completeTodo(props.id);
+};
+
+const handleDeleteTodo = (): void => {
+  todoList.deleteTodo(props.id);
+};
 </script>
 
 <style scoped lang="scss">
