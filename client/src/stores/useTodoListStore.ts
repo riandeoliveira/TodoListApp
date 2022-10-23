@@ -44,5 +44,29 @@ export const useTodoListStore = defineStore({
     searchTodo(name: string) {
       console.log(name);
     },
+    /**
+     * Calcula e retorna a quantidade total de tarefas armazenadas pelo usuário logado no sistema.
+     *
+     * @returns quantidade total de tarefas
+     */
+    getTodosLength(): number {
+      return this.$state.length;
+    },
+    /**
+     * Calcula e retorna a quantidade de tarefas concluídas.
+     *
+     * @returns quantidade de tarefas concluídas
+     */
+    getCompletedTodosLength(): number {
+      return this.$state.filter((todo) => todo.completed).length;
+    },
+    /**
+     * Calcula e retorna a quantidade de tarefas pendentes.
+     *
+     * @returns quantidade de tarefas pendentes
+     */
+    getPendingTodosLength(): number {
+      return this.$state.filter((todo) => todo.completed === false).length;
+    },
   },
 });

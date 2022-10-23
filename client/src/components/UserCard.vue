@@ -16,15 +16,15 @@
       </li>
       <li>
         <strong class="strong">Total de tarefas: </strong>
-        <span>5</span>
+        <span>{{ todoList.getTodosLength() }}</span>
       </li>
       <li>
         <strong class="strong">Tarefas concluídas: </strong>
-        <span>2</span>
+        <span>{{ todoList.getCompletedTodosLength() }}</span>
       </li>
       <li>
         <strong class="strong">Tarefas pendentes: </strong>
-        <span>3</span>
+        <span>{{ todoList.getPendingTodosLength() }}</span>
       </li>
     </ul>
     <div class="button-container">
@@ -33,6 +33,12 @@
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { useTodoListStore } from 'src/stores/useTodoListStore';
+
+const todoList = useTodoListStore();
+</script>
 
 <style scoped lang="scss">
 .container {
