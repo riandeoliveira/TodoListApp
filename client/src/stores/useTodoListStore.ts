@@ -41,8 +41,10 @@ export const useTodoListStore = defineStore({
         }
       });
     },
-    searchTodo(name: string) {
-      console.log(name);
+    searchTodo(name: string): ITodo[] {
+      return this.$state.filter((todo) =>
+        todo.name.toLowerCase().includes(name.toLowerCase())
+      );
     },
     /**
      * Calcula e retorna a quantidade total de tarefas armazenadas pelo usuário logado no sistema.
