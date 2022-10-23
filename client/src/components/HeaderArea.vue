@@ -1,5 +1,5 @@
 <template>
-  <header class="header">
+  <header class="header" :class="readyToSearchTodo && 'active'">
     <nav class="nav">
       <q-btn
         flat
@@ -10,12 +10,13 @@
       >
         <IconBase :name="search" :size="24" />
       </q-btn>
-      <q-input
+      <input
         v-model="todoName"
         dark
         ref="inputTodoName"
+        class="input"
         v-if="readyToSearchTodo"
-        v-on:change="handleSearchTodo"
+        @input="handleSearchTodo"
       />
       <q-btn
         flat
@@ -57,8 +58,10 @@ import { search, check_list, filter, account } from '../data/icons.json';
 import IconBase from 'components/IconBase.vue';
 import { useFilterModalStore } from 'stores/useFilterModalStore';
 import { ref, Ref } from 'vue';
+import { useTodoListStore } from 'src/stores/useTodoListStore';
 
 const filterModal = useFilterModalStore();
+const todoList = useTodoListStore();
 
 const handleFilterModalClick = (): void => {
   if (location.hash !== '#/todos') location.hash = '/todos';
@@ -79,7 +82,7 @@ const handleSearchField = (): void => {
 };
 
 const handleSearchTodo = (): void => {
-  console.log('jhsd');
+  todoList.searchTodo(todoName.value);
 };
 </script>
 
@@ -89,6 +92,8 @@ const handleSearchTodo = (): void => {
   top: 0;
   position: fixed;
   right: 0;
+  display: flex;
+  justify-content: center;
   left: 0;
   height: 40px;
 }
@@ -97,8 +102,9 @@ const handleSearchTodo = (): void => {
   width: inherit;
   height: inherit;
   display: flex;
+  width: 316px;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .button {
@@ -106,8 +112,22 @@ const handleSearchTodo = (): void => {
   min-width: 2.5em;
 }
 
+.input {
+  width: 100%;
+  background-color: transparent;
+  outline: 0;
+  color: #ffffff;
+}
+
 .link {
   display: flex;
   outline: 0;
+}
+
+.active {
+  .nav {
+    justify-content: start;
+    gap: 8px;
+  }
 }
 </style>

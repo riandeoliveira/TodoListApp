@@ -42,5 +42,8 @@ export const useTodoListStore = defineStore({
         }
       });
     },
+    searchTodo(name: string) {
+      console.log(name);
+    },
   },
 });
