@@ -7,15 +7,8 @@
         class="todo-list"
         :class="toggleOption.$state.filterModal ? 'opac' : ''"
       >
-        <!-- <TodoBox
-          v-for="todo in todoList.searchTodo(fieldData.$state.searchTodoField)"
-          :key="todo.id"
-          :id="todo.id"
-          :name="todo.name"
-          :completed="todo.completed"
-        /> -->
         <TodoBox
-          v-for="todo in todoList.sortByAlphabeticalOrder()"
+          v-for="todo in todoFilter.getSelectedFilter()"
           :key="todo.id"
           :id="todo.id"
           :name="todo.name"
@@ -42,10 +35,12 @@ import { useTodoListStore } from 'stores/useTodoListStore';
 import TodoBox from 'src/components/TodoBox.vue';
 import { useToggleStore } from 'src/stores/useToggleStore';
 import { useFieldData } from 'src/stores/useFieldData';
+import { useTodoFilterStore } from 'src/stores/useTodoFilterStore';
 
 const toggleOption = useToggleStore();
 const todoList = useTodoListStore();
 const fieldData = useFieldData();
+const todoFilter = useTodoFilterStore();
 </script>
 
 <style lang="scss">
