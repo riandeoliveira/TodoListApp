@@ -5,7 +5,7 @@ export interface ITodoFilter {
   id: number;
   name: string;
   selected: boolean;
-  option: ITodo[];
+  option: () => ITodo[];
 }
 
 const todoList = useTodoListStore();
@@ -17,31 +17,31 @@ export const useTodoFilterStore = defineStore({
       id: 0,
       name: 'Mais antigas',
       selected: true,
-      option: todoList.sortByOldestTodos(),
+      option: todoList.sortByOldestTodos,
     },
     {
       id: 1,
       name: 'Mais recentes',
       selected: false,
-      option: todoList.sortByMostRecentTodos(),
+      option: todoList.sortByMostRecentTodos,
     },
     {
       id: 2,
       name: 'Ordem alfabética',
       selected: false,
-      option: todoList.sortByAlphabeticalOrder(),
+      option: todoList.sortByAlphabeticalOrder,
     },
     {
       id: 3,
       name: 'Concluídas',
       selected: false,
-      option: todoList.sortByCompletedTodos(),
+      option: todoList.sortByCompletedTodos,
     },
     {
       id: 4,
       name: 'Pendentes',
       selected: false,
-      option: todoList.sortByPendingTodos(),
+      option: todoList.sortByPendingTodos,
     },
   ],
   actions: {
@@ -51,7 +51,7 @@ export const useTodoFilterStore = defineStore({
      * @returns a lista de tarefas filtrada
      */
     getSelectedFilter(): ITodo[] | undefined {
-      return this.$state.find((item) => item.selected)?.option;
+      return this.$state.find((item) => item.selected)?.option();
     },
     /**
      * Ativa a opção de filtro que foi selecionada e desativa as demais.
