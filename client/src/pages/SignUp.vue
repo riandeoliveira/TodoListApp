@@ -3,14 +3,14 @@
     <div class="card">
       <h1 class="title">Crie sua conta</h1>
       <form class="form">
-        <q-input v-model="userData.name" label="Nome" dark />
-        <q-input v-model="userData.email" label="E-mail" dark />
-        <q-input v-model="userData.password" label="Senha" dark />
+        <q-input v-model="auth.$state.signUpRef.name" label="Nome" dark />
+        <q-input v-model="auth.$state.signUpRef.email" label="E-mail" dark />
+        <q-input v-model="auth.$state.signUpRef.password" label="Senha" dark />
       </form>
       <q-btn
-        :loading="loading[0]"
+        :loading="loading.$state.isLoading"
         color="primary"
-        @click="createUser"
+        @click="auth.createUser"
         label="Cadastrar"
         type="submit"
       />
@@ -23,32 +23,11 @@
 </template>
 
 <script setup lang="ts">
-import { api } from 'src/boot/axios';
-import { ref } from 'vue';
+import { useAuthStore } from 'src/stores/useAuthStore';
+import { useLoadingStore } from 'src/stores/useLoadingStore';
 
-const userData = ref({ name: '', email: '', password: '' });
-
-const loading = ref([false]);
-
-const createUser = async () => {
-  try {
-    await api.post('/users', userData.value);
-
-    alert('Usuário criado com sucesso!');
-  } catch (err: unknown) {
-    alert('Erro ao cadastrar um novo usuário. Por favor tente novamente!');
-
-    console.log(err);
-  }
-};
-
-// async function simulateProgress(number: number) {
-//   loading.value[number] = true;
-
-//   setTimeout(() => {
-//     loading.value[number] = false;
-//   }, 3000);
-// }
+const auth = useAuthStore();
+const loading = useLoadingStore();
 </script>
 
 <style scoped lang="scss">
