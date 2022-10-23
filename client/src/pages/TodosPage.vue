@@ -2,8 +2,11 @@
   <div class="container">
     <HeaderArea />
     <main class="main">
-      <FilterModal v-if="filterModal.$state.isOpen" />
-      <div class="todo-list" :class="filterModal.$state.isOpen ? 'opac' : ''">
+      <FilterModal v-if="toggleOption.$state.filterModal" />
+      <div
+        class="todo-list"
+        :class="toggleOption.$state.filterModal ? 'opac' : ''"
+      >
         <TodoBox
           v-for="todo in todoList.$state"
           :key="todo.id"
@@ -21,11 +24,11 @@
 import HeaderArea from 'components/HeaderArea.vue';
 import FooterArea from 'components/FooterArea.vue';
 import FilterModal from 'components/FilterModal.vue';
-import { useFilterModalStore } from 'stores/useFilterModalStore';
 import { useTodoListStore } from 'stores/useTodoListStore';
 import TodoBox from 'src/components/TodoBox.vue';
+import { useToggleStore } from 'src/stores/useToggleStore';
 
-const filterModal = useFilterModalStore();
+const toggleOption = useToggleStore();
 const todoList = useTodoListStore();
 </script>
 

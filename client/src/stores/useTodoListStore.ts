@@ -8,14 +8,13 @@ export interface ITodo {
 
 export const useTodoListStore = defineStore({
   id: 'todoList',
-  state: () =>
-    [
-      { id: 'jaksh', name: 'Lavar a louça', completed: true },
-      { id: 'a6f5a', name: 'Guardar as roupas', completed: false },
-      { id: 'mb83g', name: 'Criar uma nova tarefa', completed: true },
-      { id: '7bas6', name: 'Estudar para a prova', completed: false },
-      { id: '873mb', name: 'Desenvolver o aplicativo', completed: false },
-    ] as ITodo[],
+  state: (): ITodo[] => [
+    { id: 'jaksh', name: 'Lavar a louça', completed: true },
+    { id: 'a6f5a', name: 'Guardar as roupas', completed: false },
+    { id: 'mb83g', name: 'Criar uma nova tarefa', completed: true },
+    { id: '7bas6', name: 'Estudar para a prova', completed: false },
+    { id: '873mb', name: 'Desenvolver o aplicativo', completed: false },
+  ],
   actions: {
     addTodo(name: string) {
       const todo: ITodo = {

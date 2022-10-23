@@ -5,9 +5,9 @@
       <li
         class="item"
         :class="filter.selected ? 'selected' : ''"
-        v-for="filter in filters.$state"
+        v-for="filter in todoFilters.$state"
         :key="filter.id"
-        @click="handleFilterClick(filter)"
+        @click="todoFilters.select(filter)"
       >
         {{ filter.name }}
       </li>
@@ -16,13 +16,9 @@
 </template>
 
 <script setup lang="ts">
-import { useFilterStore, IFilter } from 'stores/useFilterStore';
+import { useTodoFilterStore } from 'src/stores/useTodoFilterStore';
 
-const filters = useFilterStore();
-
-const handleFilterClick = (filter: IFilter): void => {
-  filters.select(filter);
-};
+const todoFilters = useTodoFilterStore();
 </script>
 
 <style scoped lang="scss">

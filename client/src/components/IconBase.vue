@@ -2,7 +2,7 @@
   <svg
     :width="size"
     :height="size"
-    :viewBox="view"
+    :viewBox="viewBox"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
@@ -11,12 +11,13 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{
+export interface IconBaseProps {
   name: string;
   size: number;
-}>();
+}
 
-const minSize = props.size !== 24 && 20;
+const props = defineProps<IconBaseProps>();
 
-const view = `0 0 ${minSize} ${minSize}`;
+const minSize: number = props.size === 24 ? 24 : 20;
+const viewBox = `0 0 ${minSize} ${minSize}`;
 </script>

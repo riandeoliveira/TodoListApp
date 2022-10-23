@@ -1,14 +1,14 @@
 import { defineStore } from 'pinia';
 
-export interface IFilter {
+export interface ITodoFilter {
   id: number;
   name: string;
   selected: boolean;
 }
 
-export const useFilterStore = defineStore({
-  id: 'filter',
-  state: () => [
+export const useTodoFilterStore = defineStore({
+  id: 'todoFilters',
+  state: (): ITodoFilter[] => [
     { id: 0, name: 'Mais antigas', selected: true },
     { id: 1, name: 'Mais recentes', selected: false },
     { id: 2, name: 'Ordem alfabética', selected: false },
@@ -16,9 +16,14 @@ export const useFilterStore = defineStore({
     { id: 4, name: 'Pendentes', selected: false },
   ],
   actions: {
-    select(filter: IFilter) {
+    /**
+     * Ativa a opção de filtro selecionada e desativa as demais.
+     *
+     * @param todoFilter - filtro selecionado
+     */
+    select(todoFilter: ITodoFilter) {
       this.$state.map((state) => (state.selected = false));
-      this.$state[filter.id].selected = true;
+      this.$state[todoFilter.id].selected = true;
     },
   },
 });

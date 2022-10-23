@@ -4,8 +4,16 @@
       <q-btn flat round title="Adicione uma nova tarefa" class="button">
         <IconBase :name="add_todo" :size="24" @click="handleAddTodoField" />
       </q-btn>
-      <form class="form" v-if="readyToAddTodo" @submit="handleAddTodo">
-        <q-input v-model="todoName" dark ref="inputTodoName" />
+      <form
+        class="form"
+        v-if="toggleStore.$state.addTodoField"
+        @submit="handleAddTodo"
+      >
+        <q-input
+          v-model="fieldData.$state.addTodoField"
+          dark
+          ref="inputTodoName"
+        />
       </form>
     </nav>
   </footer>
@@ -14,31 +22,26 @@
 <script setup lang="ts">
 import IconBase from 'components/IconBase.vue';
 import { add_todo } from '../data/icons.json';
-import { Ref, ref } from 'vue';
 import { useTodoListStore } from 'src/stores/useTodoListStore';
+import { useToggleStore } from 'src/stores/useToggleStore';
+import { useFieldData } from 'src/stores/useFieldData';
 
-const readyToAddTodo: Ref<boolean> = ref(false);
-const todoName: Ref<string> = ref('');
-const inputTodoName: Ref<HTMLInputElement | null> = ref(null);
-
+const toggleStore = useToggleStore();
 const todoList = useTodoListStore();
+const fieldData = useFieldData();
 
 const handleAddTodoField = (): void => {
-  readyToAddTodo.value = !readyToAddTodo.value;
-
-  setTimeout(() => {
-    inputTodoName.value?.focus();
-  }, 0);
+  toggleStore.toggle('addTodoField');
 };
 
 const handleAddTodo = (): void => {
-  if (todoName.value.trim().length === 0) {
+  if (fieldData.$state.addTodoField.trim().length === 0) {
     alert('Digite uma tarefa primeiro');
   } else {
-    todoList.addTodo(todoName.value);
+    todoList.addTodo(fieldData.$state.addTodoField);
 
-    todoName.value = '';
-    readyToAddTodo.value = false;
+    fieldData.$state.addTodoField = '';
+    toggleStore.$state.addTodoField = false;
   }
 };
 </script>
