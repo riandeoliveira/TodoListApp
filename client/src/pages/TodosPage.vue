@@ -7,8 +7,15 @@
         class="todo-list"
         :class="toggleOption.$state.filterModal ? 'opac' : ''"
       >
-        <TodoBox
+        <!-- <TodoBox
           v-for="todo in todoList.searchTodo(fieldData.$state.searchTodoField)"
+          :key="todo.id"
+          :id="todo.id"
+          :name="todo.name"
+          :completed="todo.completed"
+        /> -->
+        <TodoBox
+          v-for="todo in todoList.sortByAlphabeticalOrder()"
           :key="todo.id"
           :id="todo.id"
           :name="todo.name"
@@ -19,7 +26,7 @@
           v-if="
             todoList.searchTodo(fieldData.$state.searchTodoField).length === 0
           "
-          >Nenhuma tarefa correspondente</span
+          >Nenhuma tarefa encontrada</span
         >
       </div>
     </main>

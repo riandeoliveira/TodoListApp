@@ -16,15 +16,15 @@
       </li>
       <li>
         <strong class="strong">Total de tarefas: </strong>
-        <span>{{ todoList.getTodosLength() }}</span>
+        <span>{{ todoList.$state.length }}</span>
       </li>
       <li>
         <strong class="strong">Tarefas concluídas: </strong>
-        <span>{{ todoList.getCompletedTodosLength() }}</span>
+        <span>{{ todoList.sortByCompletedTodos().length }}</span>
       </li>
       <li>
         <strong class="strong">Tarefas pendentes: </strong>
-        <span>{{ todoList.getPendingTodosLength() }}</span>
+        <span>{{ todoList.sortByPendingTodos().length }}</span>
       </li>
     </ul>
     <div class="button-container">

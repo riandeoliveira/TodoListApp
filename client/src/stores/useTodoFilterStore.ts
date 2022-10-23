@@ -17,7 +17,7 @@ export const useTodoFilterStore = defineStore({
   ],
   actions: {
     /**
-     * Ativa a opção de filtro selecionada e desativa as demais.
+     * Ativa a opção de filtro que foi selecionada e desativa as demais.
      *
      * @param todoFilter - filtro selecionado
      */

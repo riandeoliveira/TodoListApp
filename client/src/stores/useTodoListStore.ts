@@ -12,8 +12,8 @@ export const useTodoListStore = defineStore({
     { id: 'jaksh', name: 'Lavar a louça', completed: true },
     { id: 'a6f5a', name: 'Guardar as roupas', completed: false },
     { id: 'mb83g', name: 'Criar uma nova tarefa', completed: true },
-    { id: '7bas6', name: 'Estudar para a prova', completed: false },
     { id: '873mb', name: 'Desenvolver o aplicativo', completed: false },
+    { id: '7bas6', name: 'Estudar para a prova', completed: false },
   ],
   actions: {
     addTodo(name: string) {
@@ -41,34 +41,61 @@ export const useTodoListStore = defineStore({
         }
       });
     },
+    /**
+     * Remove todas as tarefas existentes. Esta ação NÃO pode ser desfeita!
+     */
+    deleteAllTodos(): void {
+      this.$state.splice(0, this.$state.length);
+    },
+    /**
+     * Pesquisa uma tarefa pelo seu nome e as retorna caso sejam encontradas.
+     * @param name texto inserido na barra de pesquisa
+     * @returns somente as tarefas cujos nomes condizem com a pesquisa realizada
+     */
     searchTodo(name: string): ITodo[] {
       return this.$state.filter((todo) =>
         todo.name.toLowerCase().includes(name.toLowerCase())
       );
     },
     /**
-     * Calcula e retorna a quantidade total de tarefas armazenadas pelo usuário logado no sistema.
+     * Filtra as tarefas por ordem alfabética.
      *
-     * @returns quantidade total de tarefas
+     * @returns todas as tarefas (A-Z)
      */
-    getTodosLength(): number {
-      return this.$state.length;
+    sortByAlphabeticalOrder(): ITodo[] {
+      return this.$state.sort((a, b) => a.name.localeCompare(b.name));
     },
     /**
-     * Calcula e retorna a quantidade de tarefas concluídas.
+     * Filtra as tarefas e exibe apenas as que estão concluídas.
      *
-     * @returns quantidade de tarefas concluídas
+     * @returns apenas as tarefas concluídas
      */
-    getCompletedTodosLength(): number {
-      return this.$state.filter((todo) => todo.completed).length;
+    sortByCompletedTodos(): ITodo[] {
+      return this.$state.filter((todo) => todo.completed);
     },
     /**
-     * Calcula e retorna a quantidade de tarefas pendentes.
+     * Filtra as tarefas e exibe as mais recentes primeiro.
      *
-     * @returns quantidade de tarefas pendentes
+     * @returns as tarefas mais recentes primeiro
      */
-    getPendingTodosLength(): number {
-      return this.$state.filter((todo) => todo.completed === false).length;
+    sortByMostRecentTodos(): ITodo[] {
+      return this.$state.slice().reverse();
+    },
+    /**
+     * Filtra as tarefas e exibe as mais antigas primeiro. Esta é a opção padrão.
+     *
+     * @returns as tarefas mais antigas primeiro
+     */
+    sortByOldestTodos(): ITodo[] {
+      return this.$state;
+    },
+    /**
+     * Filtra as tarefas e exibe apenas as que estão pendentes.
+     *
+     * @returns apenas as tarefas pendentes
+     */
+    sortByPendingTodos(): ITodo[] {
+      return this.$state.filter((todo) => todo.completed === false);
     },
   },
 });
