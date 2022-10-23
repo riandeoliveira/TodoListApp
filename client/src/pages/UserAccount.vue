@@ -12,11 +12,7 @@ import FooterArea from 'components/FooterArea.vue';
 import UserCard from 'components/UserCard.vue';
 </script>
 
-<style lang="scss">
-body {
-  background-color: #101010;
-}
-
+<style setup lang="scss">
 .main {
   padding: 56px 16px;
   color: white;
