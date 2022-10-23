@@ -1,10 +1,10 @@
 {
   "name": "todo-list-app",
   "version": "1.0.0",
-  "main": "src/server.ts",
+  "main": "src/app.ts",
   "scripts": {
     "build": "tsc",
-    "dev": "tsnd --exit-child src/server.ts"
+    "dev": "tsnd --exit-child src/app.ts"
   },
   "license": "MIT",
   "dependencies": {
