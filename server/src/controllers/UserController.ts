@@ -1,36 +1,74 @@
 import { User } from '@prisma/client';
 import { Request, Response } from 'express';
 import { prisma } from '../libs/prisma';
+import bcrypt from 'bcrypt';
 
 class UserController {
-  all = async (_req: Request, res: Response): Promise<void> => {
+  all = async (_req: Request, res: Response) => {
     try {
       const users: User[] = await prisma.user.findMany();
 
-      res.status(200).json(users);
-    } catch (err: unknown) {
-      console.error(err);
-
-      res.status(404).json({ error: err });
+      return res.status(200).json(users);
+    } catch (error: any) {
+      return res.status(404).json({
+        name: error.name,
+        message: error.message,
+        code: 404,
+      });
     }
   };
 
-  create = async (req: Request, res: Response): Promise<void> => {
-    const user: Omit<User, 'id'> = req.body;
+  auth = (req: Request, res: Response) => {};
+
+  create = async (req: Request, res: Response) => {
+    const { name, email, password }: Omit<User, 'id'> = req.body;
 
     try {
-      await prisma.user.create({
-        data: user,
+      const invalidFields: boolean =
+        !name.trim() || !email.trim() || !password.trim();
+
+      const userAlreadyExists: User | null = await prisma.user.findUnique({
+        where: {
+          email,
+        },
       });
 
-      res.status(201).json({ message: 'Usuário criado com sucesso!' });
-    } catch (err: unknown) {
-      console.error(err);
+      if (invalidFields)
+        return res.status(500).json({
+          name: 'Error',
+          message: 'Campos inválidos! Por favor tente novamente.',
+          code: 500,
+        });
 
-      res.status(500).json({ error: err });
+      if (userAlreadyExists)
+        return res.status(500).json({
+          name: 'Error',
+          message: 'E-mail já cadastrado! Por favor, utilize outro.',
+          code: 500,
+        });
+
+      const salt: string = await bcrypt.genSalt(10);
+      const passwordHash: string = await bcrypt.hash(password, salt);
+
+      await prisma.user.create({
+        data: {
+          name: name.trim(),
+          email: email.trim(),
+          password: passwordHash.trim(),
+        },
+      });
+
+      return res.status(201).send();
+    } catch (error: any) {
+      return res.status(500).json({
+        name: error.name,
+        message: error.message,
+        code: 500,
+      });
     }
   };
-  delete = async (req: Request, res: Response): Promise<void> => {
+
+  delete = async (req: Request, res: Response) => {
     const id: string = req.params.id;
 
     try {
@@ -46,13 +84,15 @@ class UserController {
         },
       });
 
-      res.status(404).json({ message: 'Usuário removido com sucesso!' });
-    } catch (err: unknown) {
-      console.log(err);
-
-      res.status(409).json({ error: err });
+      return res.status(204).send();
+    } catch (error: any) {
+      return res.status(409).json({
+        name: error.name,
+        message: error.message,
+        code: 409,
+      });
     }
   };
 }
 
-export default new UserController();
+export const user: UserController = new UserController();
