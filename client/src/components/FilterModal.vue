@@ -16,9 +16,9 @@
 </template>
 
 <script setup lang="ts">
-import { useTodoFilterStore } from 'src/stores/useTodoFilterStore';
+import { todoFilterStore } from 'src/stores/todoFilterStore';
 
-const todoFilters = useTodoFilterStore();
+const todoFilters = todoFilterStore();
 </script>
 
 <style scoped lang="scss">

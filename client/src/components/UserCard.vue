@@ -7,12 +7,12 @@
         width="48"
         height="48"
       />
-      <h1 class="title">John Doe</h1>
+      <h1 class="title">{{ user.name }}</h1>
     </div>
     <ul class="data-list">
       <li>
         <strong class="strong">E-mail: </strong>
-        <span>johndoe2000@email.com</span>
+        <span>{{ user.email }}</span>
       </li>
       <li>
         <strong class="strong">Total de tarefas: </strong>
@@ -28,16 +28,23 @@
       </li>
     </ul>
     <div class="button-container">
-      <q-btn color="primary" label="Sair" class="button" />
+      <q-btn
+        color="primary"
+        label="Sair"
+        class="button"
+        @click="user.signOut()"
+      />
       <q-btn color="negative" label="Excluir conta" class="button" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useTodoListStore } from 'src/stores/useTodoListStore';
+import { todoListStore } from 'src/stores/todoListStore';
+import { userStore } from 'src/stores/userStore';
 
-const todoList = useTodoListStore();
+const todoList = todoListStore();
+const user = userStore();
 </script>
 
 <style scoped lang="scss">

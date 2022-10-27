@@ -6,14 +6,10 @@
       </q-btn>
       <form
         class="form"
-        v-if="toggleStore.$state.addTodoField"
+        v-if="toggleStore.addTodoField"
         @submit="handleAddTodo"
       >
-        <q-input
-          v-model="fieldData.$state.addTodoField"
-          dark
-          ref="inputTodoName"
-        />
+        <q-input v-model="fieldData.addTodo" dark ref="inputTodoName" />
       </form>
     </nav>
   </footer>
@@ -22,26 +18,26 @@
 <script setup lang="ts">
 import IconBase from 'components/IconBase.vue';
 import { add_todo } from '../data/icons.json';
-import { useTodoListStore } from 'src/stores/useTodoListStore';
-import { useToggleStore } from 'src/stores/useToggleStore';
-import { useFieldData } from 'src/stores/useFieldData';
+import { todoListStore } from 'src/stores/todoListStore';
+import { toggleElementStore } from 'src/stores/toggleElementStore';
+import { fieldDataStore } from 'src/stores/fieldDataStore';
 
-const toggleStore = useToggleStore();
-const todoList = useTodoListStore();
-const fieldData = useFieldData();
+const toggleStore = toggleElementStore();
+const todoList = todoListStore();
+const fieldData = fieldDataStore();
 
 const handleAddTodoField = (): void => {
   toggleStore.toggle('addTodoField');
 };
 
 const handleAddTodo = (): void => {
-  if (fieldData.$state.addTodoField.trim().length === 0) {
+  if (fieldData.addTodo.trim().length === 0) {
     alert('Digite uma tarefa primeiro');
   } else {
-    todoList.addTodo(fieldData.$state.addTodoField);
+    todoList.add(fieldData.addTodo);
 
-    fieldData.$state.addTodoField = '';
-    toggleStore.$state.addTodoField = false;
+    fieldData.addTodo = '';
+    toggleStore.addTodoField = false;
   }
 };
 </script>

@@ -1,8 +1,5 @@
 <template>
-  <header
-    class="header"
-    :class="toggleOption.$state.searchTodoField && 'active'"
-  >
+  <header class="header" :class="toggleOption.searchTodoField && 'active'">
     <nav class="nav">
       <q-btn
         flat
@@ -14,10 +11,10 @@
         <IconBase :name="search" :size="24" />
       </q-btn>
       <input
-        v-model="fieldData.$state.searchTodoField"
+        v-model="fieldData.searchTodo"
         dark
         class="input"
-        v-if="toggleOption.$state.searchTodoField"
+        v-if="toggleOption.searchTodoField"
         @input="handleSearchTodo"
       />
       <q-btn
@@ -25,7 +22,7 @@
         round
         title="Visualize suas tarefas"
         class="button"
-        v-if="!toggleOption.$state.searchTodoField"
+        v-if="!toggleOption.searchTodoField"
       >
         <a href="/#/todos" class="link">
           <IconBase :name="check_list" :size="24" />
@@ -36,7 +33,7 @@
         round
         title="Entre na sua conta"
         class="button"
-        v-if="!toggleOption.$state.searchTodoField"
+        v-if="!toggleOption.searchTodoField"
       >
         <a href="/#/account" class="link">
           <IconBase :name="account" :size="24" />
@@ -47,7 +44,7 @@
         round
         title="Filtre suas tarefas"
         class="button"
-        v-if="!toggleOption.$state.searchTodoField"
+        v-if="!toggleOption.searchTodoField"
       >
         <IconBase :name="filter" :size="24" @click="handleFilterModalClick" />
       </q-btn>
@@ -58,13 +55,13 @@
 <script setup lang="ts">
 import { search, check_list, filter, account } from '../data/icons.json';
 import IconBase from 'components/IconBase.vue';
-import { useTodoListStore } from 'src/stores/useTodoListStore';
-import { useToggleStore } from 'src/stores/useToggleStore';
-import { useFieldData } from 'src/stores/useFieldData';
+import { todoListStore } from 'src/stores/todoListStore';
+import { toggleElementStore } from 'src/stores/toggleElementStore';
+import { fieldDataStore } from 'src/stores/fieldDataStore';
 
-const todoList = useTodoListStore();
-const toggleOption = useToggleStore();
-const fieldData = useFieldData();
+const todoList = todoListStore();
+const toggleOption = toggleElementStore();
+const fieldData = fieldDataStore();
 
 const handleFilterModalClick = (): void => {
   if (location.hash !== '#/todos') location.hash = '/todos';
@@ -77,7 +74,7 @@ const handleSearchField = (): void => {
 };
 
 const handleSearchTodo = (): void => {
-  todoList.searchTodo(fieldData.$state.searchTodoField);
+  todoList.search(fieldData.searchTodo);
 };
 </script>
 

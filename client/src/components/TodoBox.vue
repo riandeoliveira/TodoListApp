@@ -5,7 +5,7 @@
       <q-checkbox
         v-model="completed"
         :dark="true"
-        @click="todoList.completeTodo(props.id)"
+        @click="todoList.complete(props.id)"
       />
       <span class="todo-name">{{ name }}</span>
     </div>
@@ -13,7 +13,7 @@
       :name="trash_can"
       :size="28"
       class="trash-can"
-      @click="todoList.deleteTodo(props.id)"
+      @click="todoList.delete(props.id)"
     />
   </div>
 </template>
@@ -21,7 +21,7 @@
 <script setup lang="ts">
 import IconBase from './IconBase.vue';
 import { trash_can } from '../data/icons.json';
-import { useTodoListStore } from 'src/stores/useTodoListStore';
+import { todoListStore } from 'src/stores/todoListStore';
 
 export interface TodoProps {
   id: string;
@@ -31,7 +31,7 @@ export interface TodoProps {
 
 const props = defineProps<TodoProps>();
 
-const todoList = useTodoListStore();
+const todoList = todoListStore();
 </script>
 
 <style scoped lang="scss">
