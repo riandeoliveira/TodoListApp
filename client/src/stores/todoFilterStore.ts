@@ -1,18 +1,18 @@
 import { defineStore } from 'pinia';
-import { ITodo, useTodoListStore } from './useTodoListStore';
+import { TodoState, todoListStore } from './todoListStore';
 
-export interface ITodoFilter {
+export interface TodoStateFilter {
   id: number;
   name: string;
   selected: boolean;
-  option: () => ITodo[];
+  option: () => TodoState[];
 }
 
-const todoList = useTodoListStore();
+const todoList = todoListStore();
 
-export const useTodoFilterStore = defineStore({
+export const todoFilterStore = defineStore({
   id: 'todoFilters',
-  state: (): ITodoFilter[] => [
+  state: (): TodoStateFilter[] => [
     {
       id: 0,
       name: 'Mais antigas',
@@ -45,20 +45,11 @@ export const useTodoFilterStore = defineStore({
     },
   ],
   actions: {
-    /**
-     * Encontra e ativa o filtro selecionado no momento.
-     *
-     * @returns a lista de tarefas filtrada
-     */
-    getSelectedFilter(): ITodo[] | undefined {
+    getSelectedFilter(): TodoState[] | undefined {
       return this.$state.find((item) => item.selected)?.option();
     },
-    /**
-     * Ativa a opção de filtro que foi selecionada e desativa as demais.
-     *
-     * @param todoFilter - filtro selecionado
-     */
-    select(todoFilter: ITodoFilter) {
+
+    select(todoFilter: TodoStateFilter) {
       this.$state.map((state) => (state.selected = false));
       this.$state[todoFilter.id].selected = true;
     },
