@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { prisma } from '../libs/prisma';
 
 class TodoController {
-  all = async (req: Request, res: Response): Promise<void> => {
+  all = async (req: Request, res: Response) => {
     const id: string = req.params.id;
 
     try {
@@ -13,15 +13,13 @@ class TodoController {
         },
       });
 
-      res.status(200).json(todos);
-    } catch (err: unknown) {
-      console.error(err);
-
-      res.status(404).json({ error: err });
+      return res.status(200).json(todos);
+    } catch (error: any) {
+      return res.status(404).json({ error: error.message });
     }
   };
 
-  create = async (req: Request, res: Response): Promise<void> => {
+  create = async (req: Request, res: Response) => {
     const id: string = req.params.id;
     const todo: Pick<Todo, 'name'> = req.body;
 
@@ -34,15 +32,13 @@ class TodoController {
         },
       });
 
-      res.status(201).json({ message: 'Tarefa criada com sucesso!' });
-    } catch (err: unknown) {
-      console.log(err);
-
-      res.status(500).json({ error: err });
+      return res.status(201).send();
+    } catch (error: any) {
+      return res.status(500).json({ error: error.message });
     }
   };
 
-  delete = async (req: Request, res: Response): Promise<void> => {
+  delete = async (req: Request, res: Response) => {
     const id: string = req.params.id;
 
     try {
@@ -52,13 +48,11 @@ class TodoController {
         },
       });
 
-      res.status(204).json({ message: 'Tarefa removida com sucesso!' });
-    } catch (err: unknown) {
-      console.log(err);
-
-      res.status(409).json({ error: err });
+      return res.status(204).send();
+    } catch (error: any) {
+      return res.status(409).json({ error: error.message });
     }
   };
 }
 
-export default new TodoController();
+export const todo: TodoController = new TodoController();
