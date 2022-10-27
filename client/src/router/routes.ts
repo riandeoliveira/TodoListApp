@@ -2,6 +2,10 @@ import { RouteRecordRaw } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
   {
+    path: '/',
+    redirect: '/signup',
+  },
+  {
     path: '/signup',
     component: () => import('pages/SignUp.vue'),
   },
@@ -12,10 +16,16 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/todos',
     component: () => import('pages/TodosPage.vue'),
+    beforeEnter: () => {
+      return true;
+    },
   },
   {
     path: '/account',
     component: () => import('pages/UserAccount.vue'),
+    beforeEnter: () => {
+      return true;
+    },
   },
   {
     path: '/:catchAll(.*)*',
