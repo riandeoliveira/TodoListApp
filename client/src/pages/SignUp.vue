@@ -3,14 +3,14 @@
     <div class="card">
       <h1 class="title">Crie sua conta</h1>
       <form class="form">
-        <q-input v-model="auth.$state.signUpRef.name" label="Nome" dark />
-        <q-input v-model="auth.$state.signUpRef.email" label="E-mail" dark />
-        <q-input v-model="auth.$state.signUpRef.password" label="Senha" dark />
+        <q-input v-model="fieldData.signUp.name" label="Nome" dark />
+        <q-input v-model="fieldData.signUp.email" label="E-mail" dark />
+        <q-input v-model="fieldData.signUp.password" label="Senha" dark />
       </form>
       <q-btn
-        :loading="loading.$state.isLoading"
+        :loading="loading.isLoading"
         color="primary"
-        @click="auth.createUser"
+        @click="user.signUp()"
         label="Cadastrar"
         type="submit"
       />
@@ -23,11 +23,13 @@
 </template>
 
 <script setup lang="ts">
-import { useAuthStore } from 'src/stores/useAuthStore';
-import { useLoadingStore } from 'src/stores/useLoadingStore';
+import { fieldDataStore } from 'src/stores/fieldDataStore';
+import { loadingStore } from 'src/stores/loadingStore';
+import { userStore } from 'src/stores/userStore';
 
-const auth = useAuthStore();
-const loading = useLoadingStore();
+const fieldData = fieldDataStore();
+const loading = loadingStore();
+const user = userStore();
 </script>
 
 <style scoped lang="scss">

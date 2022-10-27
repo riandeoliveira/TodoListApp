@@ -1,12 +1,9 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="user.authenticated">
     <HeaderArea />
     <main class="main">
-      <FilterModal v-if="toggleOption.$state.filterModal" />
-      <div
-        class="todo-list"
-        :class="toggleOption.$state.filterModal ? 'opac' : ''"
-      >
+      <FilterModal v-if="toggleOption.filterModal" />
+      <div class="todo-list" :class="toggleOption.filterModal ? 'opac' : ''">
         <TodoBox
           v-for="todo in todoFilter.getSelectedFilter()"
           :key="todo.id"
@@ -16,9 +13,7 @@
         />
         <span
           class="not-found"
-          v-if="
-            todoList.searchTodo(fieldData.$state.searchTodoField).length === 0
-          "
+          v-if="todoList.search(fieldData.searchTodo).length === 0"
           >Nenhuma tarefa encontrada</span
         >
       </div>
@@ -31,16 +26,28 @@
 import HeaderArea from 'components/HeaderArea.vue';
 import FooterArea from 'components/FooterArea.vue';
 import FilterModal from 'components/FilterModal.vue';
-import { useTodoListStore } from 'stores/useTodoListStore';
+import { todoListStore } from 'src/stores/todoListStore';
 import TodoBox from 'src/components/TodoBox.vue';
-import { useToggleStore } from 'src/stores/useToggleStore';
-import { useFieldData } from 'src/stores/useFieldData';
-import { useTodoFilterStore } from 'src/stores/useTodoFilterStore';
+import { toggleElementStore } from 'src/stores/toggleElementStore';
+import { fieldDataStore } from 'src/stores/fieldDataStore';
+import { todoFilterStore } from 'src/stores/todoFilterStore';
+import { userStore } from 'src/stores/userStore';
+import { onMounted } from 'vue';
 
-const toggleOption = useToggleStore();
-const todoList = useTodoListStore();
-const fieldData = useFieldData();
-const todoFilter = useTodoFilterStore();
+const toggleOption = toggleElementStore();
+const todoFilter = todoFilterStore();
+const todoList = todoListStore();
+const fieldData = fieldDataStore();
+const user = userStore();
+
+// Verifica se o usuário está autenticado. Se sim, continua na página, caso contrário, o redireciona.
+async function handleUserAuth() {
+  await user.verify();
+
+  if (!user.authenticated) location.hash = '/signup';
+}
+
+onMounted(() => handleUserAuth());
 </script>
 
 <style lang="scss">
