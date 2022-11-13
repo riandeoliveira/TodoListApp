@@ -11,6 +11,7 @@
         <IconBase :name="search" :size="24" />
       </q-btn>
       <input
+        type="text"
         v-model="fieldData.searchTodo"
         dark
         class="input"
@@ -64,12 +65,24 @@ const toggleOption = toggleElementStore();
 const fieldData = fieldDataStore();
 
 const handleFilterModalClick = (): void => {
-  if (location.hash !== '#/todos') location.hash = '/todos';
+  if (location.hash !== '/todos') location.hash = '/todos';
 
   toggleOption.toggle('filterModal');
 };
 
 const handleSearchField = (): void => {
+  if (location.hash !== '/todos') location.hash = '/todos';
+
+  setTimeout(() => {
+    const searchTodoField = document.querySelector(
+      'input[type=text]'
+    ) as HTMLInputElement;
+
+    console.log(searchTodoField);
+
+    searchTodoField?.focus();
+  }, 100);
+
   toggleOption.toggle('searchTodoField');
 };
 

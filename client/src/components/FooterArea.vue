@@ -9,7 +9,7 @@
         v-if="toggleStore.addTodoField"
         @submit="handleAddTodo"
       >
-        <q-input v-model="fieldData.addTodo" dark ref="inputTodoName" />
+        <q-input v-model="fieldData.addTodo" id="addTodoField" dark />
       </form>
     </nav>
   </footer>
@@ -27,6 +27,16 @@ const todoList = todoListStore();
 const fieldData = fieldDataStore();
 
 const handleAddTodoField = (): void => {
+  setTimeout(() => {
+    const addTodoField = document.querySelector(
+      'input[type=text]'
+    ) as HTMLInputElement;
+
+    console.log(addTodoField);
+
+    addTodoField?.focus();
+  }, 100);
+
   toggleStore.toggle('addTodoField');
 };
 
