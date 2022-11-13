@@ -5,10 +5,12 @@ import { authToken } from '../middlewares/authToken';
 
 export const routes: Router = Router();
 
-routes.delete('/users/:id', authToken, user.delete);
-routes.delete('/users/:id/todos', authToken, todo.delete);
-routes.get('/user', authToken, user.get);
-routes.get('/users/:id/todos', authToken, todo.all);
+// Rotas de usuário
 routes.post('/auth/signin', user.authenticate);
 routes.post('/auth/signup', user.create);
-routes.post('/users/:id/todos', authToken, todo.create);
+routes.delete('/user', authToken, user.delete);
+
+// Rotas de tarefas
+routes.put('/todo/:id', authToken, todo.complete);
+routes.post('/todo', authToken, todo.create);
+routes.delete('/todo/:id', authToken, todo.delete);

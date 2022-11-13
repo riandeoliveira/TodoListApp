@@ -3,28 +3,39 @@ import { Request, Response } from 'express';
 import { prisma } from '../libs/prisma';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { User } from '../../types/user';
-import { UserService } from '../services/UserService';
+import { createUserSchema, authUserSchema } from '../validations/user-schema';
 
-class UserController extends UserService {
+interface UserResponse {
+  name: string;
+  email: string;
+  password: string;
+}
+
+class UserController {
   // Faz a autenticação de um usuário (login).
-  authenticate = async (req: Request, res: Response) => {
-    const { email, password }: User.Auth = req.body;
+  authenticate = async (request: Request, response: Response) => {
+    const user: Omit<UserResponse, 'name'> = request.body;
 
     try {
-      const areInvalidFields: boolean = !email.trim() || !password.trim();
+      const isValidUser: boolean = await authUserSchema.isValid(user);
 
-      // SELECT * FROM users WHERE email = 'email'
+      if (!isValidUser) {
+        return response.status(500).json({
+          name: 'Invalid data',
+          code: 500,
+          message: 'Dados inválidos! Por favor, tente novamente.',
+        });
+      }
+
       const userAlreadyExists = await prisma.user.findUnique({
         where: {
-          email,
+          email: user.email,
         },
       });
 
-      // SELECT password FROM users WHERE email = 'email'
       const hash = await prisma.user.findUnique({
         where: {
-          email,
+          email: user.email,
         },
         select: {
           password: true,
@@ -32,45 +43,40 @@ class UserController extends UserService {
       });
 
       const isValidPassword: boolean = await bcrypt.compare(
-        password,
+        user.password,
         hash?.password as string
       );
 
-      if (areInvalidFields) {
-        return res.status(401).json({
+      if (!userAlreadyExists || !isValidPassword) {
+        return response.status(401).json({
           name: 'Error',
-          message: 'Campos inválidos! Por favor tente novamente.',
           code: 401,
-        });
-      }
-
-      if (!userAlreadyExists || isValidPassword === false) {
-        return res.status(401).json({
-          name: 'Error',
           message: 'E-mail ou senha inválidos',
-          code: 401,
         });
       }
 
-      const secret = process.env.ACCESS_TOKEN_SECRET;
-
-      // SELECT id, name, email FROM users WHERE email = 'email'
-      const user = await prisma.user.findUnique({
+      const userData = await prisma.user.findUnique({
         where: {
-          email,
+          email: user.email,
         },
         select: {
           id: true,
           name: true,
           email: true,
+          todos: true,
         },
       });
 
-      const accessToken: string = jwt.sign(user as UserType, secret as string);
+      const secret = process.env.ACCESS_TOKEN_SECRET;
 
-      return res.status(200).json({ ...user, accessToken });
+      const accessToken: string = jwt.sign(
+        userData as Omit<UserType, 'password'>,
+        secret as string
+      );
+
+      return response.status(200).json({ ...userData, accessToken });
     } catch (error: any) {
-      return res.status(401).json({
+      return response.status(401).json({
         name: error.name,
         message: error.message,
         code: 401,
@@ -79,126 +85,96 @@ class UserController extends UserService {
   };
 
   // Cria um novo usuário (cadastro).
-  create = async (req: Request, res: Response) => {
-    const { name, email, password }: User.Create = req.body;
+  create = async (request: Request, response: Response) => {
+    const user: UserResponse = request.body;
 
     try {
-      const areInvalidFields: boolean =
-        !name.trim() || !email.trim() || !password.trim();
+      const isValidUser: boolean = await createUserSchema.isValid(user);
 
-      // SELECT * FROM users WHERE email = 'email'
-      const userAlreadyExists = await prisma.user.findUnique({
-        where: {
-          email,
-        },
-      });
-
-      if (areInvalidFields) {
-        return res.status(500).json({
-          name: 'Error',
-          message: 'Campos inválidos! Por favor, tente novamente.',
+      if (!isValidUser) {
+        return response.status(500).json({
+          name: 'Invalid data',
           code: 500,
+          message: 'Dados inválidos! Por favor, tente novamente.',
         });
       }
 
+      const userAlreadyExists = await prisma.user.findUnique({
+        where: {
+          email: user.email,
+        },
+      });
+
       if (userAlreadyExists) {
-        return res.status(500).json({
-          name: 'Error',
-          message: 'Este e-mail já está em uso! Por favor, utilize outro.',
+        return response.status(500).json({
+          name: 'User already exists',
           code: 500,
+          message: 'Este e-mail já está em uso! Por favor, utilize outro.',
         });
       }
 
       const salt: string = await bcrypt.genSalt(10);
-      const passwordHash: string = await bcrypt.hash(password, salt);
+      const passwordHash: string = await bcrypt.hash(user.password, salt);
 
-      // INSERT INTO users VALUES (name, email, password)
       await prisma.user.create({
         data: {
-          name: name.trim(),
-          email: email.trim(),
+          name: user.name.trim(),
+          email: user.email.trim(),
           password: passwordHash.trim(),
         },
       });
 
-      const secret = process.env.ACCESS_TOKEN_SECRET;
-
-      // SELECT * FROM users WHERE email = 'email'
-      const user = await prisma.user.findUnique({
+      const userData = await prisma.user.findUnique({
         where: {
-          email,
+          email: user.email,
         },
         select: {
           id: true,
           name: true,
           email: true,
+          todos: true,
         },
       });
 
-      const accessToken: string = jwt.sign(user as UserType, secret as string);
+      const secret = process.env.ACCESS_TOKEN_SECRET;
+      const accessToken: string = jwt.sign(
+        userData as Omit<UserType, 'password'>,
+        secret as string
+      );
 
-      return res.status(201).json({ ...user, accessToken });
+      return response.status(201).json({ ...userData, accessToken });
     } catch (error: any) {
-      return res.status(500).json({
+      return response.status(500).json({
         name: error.name,
-        message: error.message,
         code: 500,
+        message: error.message,
       });
     }
   };
 
   // Remove do sistema um usuário e suas tarefas.
-  delete = async (req: Request, res: Response) => {
-    const id: string = req.params.id;
+  delete = async (_request: Request, response: Response) => {
+    const userId: string = response.locals.user.id;
 
     try {
-      // DELETE FROM todos WHERE user_id = 'id'
       await prisma.todo.deleteMany({
         where: {
-          userId: id,
+          userId,
         },
       });
 
-      // DELETE FROM users WHERE id = 'id'
       await prisma.user.delete({
         where: {
-          id,
+          id: userId,
         },
       });
 
-      return res.status(204).send();
+      return response.status(204).send();
     } catch (error: any) {
-      return res.status(409).json({
+      return response.status(409).json({
         name: error.name,
-        message: error.message,
         code: 409,
-      });
-    }
-  };
-
-  // Pega um usuário específico de acordo com o token de acesso enviado no cabeçalho da requisição.
-  get = async (_req: Request, res: Response) => {
-    const id: string = res.locals.user.id; // recebe o usuário decodificado do middleware
-
-    try {
-      // SELECT id, name, email FROM users WHERE id = 'id'
-      const user = await prisma.user.findUnique({
-        where: {
-          id,
-        },
-        select: {
-          id: true,
-          name: true,
-          email: true,
-        },
-      });
-
-      return res.status(200).json(user);
-    } catch (error: any) {
-      return res.status(404).json({
-        name: error.name,
         message: error.message,
-        code: 404,
       });
     }
   };
