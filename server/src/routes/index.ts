@@ -9,6 +9,7 @@ export const routes: Router = Router();
 routes.post('/auth/signin', user.authenticate);
 routes.post('/auth/signup', user.create);
 routes.delete('/user', authToken, user.delete);
+routes.get('/user', authToken, user.get);
 
 // Rotas de tarefas
 routes.put('/todo/:id', authToken, todo.complete);

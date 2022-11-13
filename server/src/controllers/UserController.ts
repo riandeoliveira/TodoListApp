@@ -178,6 +178,35 @@ class UserController {
       });
     }
   };
+
+  // Retorna os dados de um usuário específico.
+  get = async (_request: Request, response: Response) => {
+    const userId: string = response.locals.user.id;
+
+    console.log(response.locals);
+
+    try {
+      const user = await prisma.user.findUnique({
+        where: {
+          id: userId,
+        },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          todos: true,
+        },
+      });
+
+      return response.status(200).json(user);
+    } catch (error: any) {
+      return response.status(500).json({
+        name: error.name,
+        code: 500,
+        message: error.message,
+      });
+    }
+  };
 }
 
 export const user: UserController = new UserController();
