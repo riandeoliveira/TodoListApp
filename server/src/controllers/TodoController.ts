@@ -1,4 +1,3 @@
-import { Todo as TodoType } from '@prisma/client';
 import { Request, Response } from 'express';
 import { prisma } from '../libs/prisma';
 import { createTodoSchema } from '../validations/todo-schema';

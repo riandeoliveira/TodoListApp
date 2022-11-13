@@ -34,17 +34,25 @@
         class="button"
         @click="user.signOut()"
       />
-      <q-btn color="negative" label="Excluir conta" class="button" />
+      <q-btn
+        color="negative"
+        label="Excluir conta"
+        class="button"
+        :loading="loading.isLoading"
+        @click="user.deleteAccount()"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { loadingStore } from 'src/stores/loadingStore';
 import { todoListStore } from 'src/stores/todoListStore';
 import { userStore } from 'src/stores/userStore';
 
 const todoList = todoListStore();
 const user = userStore();
+const loading = loadingStore();
 </script>
 
 <style scoped lang="scss">

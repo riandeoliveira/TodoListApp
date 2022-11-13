@@ -1,4 +1,6 @@
 import { defineStore } from 'pinia';
+import { api } from 'src/boot/axios';
+import axios from 'axios';
 
 export interface TodoState {
   id: string;
@@ -10,30 +12,75 @@ export const todoListStore = defineStore({
   id: 'todoList',
   state: (): TodoState[] => [],
   actions: {
-    add(name: string): void {
-      const todo: TodoState = {
-        id: 'lorem',
-        name,
-        completed: false,
-      };
+    async add(name: string): Promise<void> {
+      try {
+        const accessToken: string =
+          localStorage.getItem('access_token') || '[]';
 
-      this.$state.push(todo);
+        await api.post(
+          '/todo/',
+          { name },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+
+        const todo: TodoState = {
+          id: '',
+          name,
+          completed: false,
+        };
+
+        this.$state.push(todo);
+      } catch (error: unknown) {
+        alert('Não foi possível adicionar uma nova tarefa.');
+
+        console.log(error);
+      }
     },
 
-    complete(id: string): void {
-      this.$state.filter((todo) => {
-        if (todo.id === id) todo.completed = !todo.completed;
-      });
+    async complete(id: string): Promise<void> {
+      try {
+        const accessToken: string =
+          localStorage.getItem('access_token') || '[]';
+
+        await api.put(
+          `/todo/${id}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+      } catch (error: unknown) {
+        console.log(error);
+      }
     },
 
-    delete(id: string): void {
-      this.$state.filter((todo) => {
-        if (todo.id === id) {
-          const todoIndex: number = this.$state.indexOf(todo);
+    async delete(id: string): Promise<void> {
+      try {
+        this.$state.filter((todo) => {
+          if (todo.id === id) {
+            const todoIndex: number = this.$state.indexOf(todo);
 
-          this.$state.splice(todoIndex, 1);
-        }
-      });
+            this.$state.splice(todoIndex, 1);
+          }
+        });
+
+        const accessToken: string =
+          localStorage.getItem('access_token') || '[]';
+
+        await api.delete(`/todo/${id}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+      } catch (error: unknown) {
+        console.log(error);
+      }
     },
 
     deleteAll(): void {

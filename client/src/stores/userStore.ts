@@ -33,8 +33,26 @@ export const userStore = defineStore({
     authenticated: false,
   }),
   actions: {
-    deleteAccount() {
-      return false;
+    async deleteAccount(): Promise<void> {
+      loading.wait();
+
+      try {
+        await api.delete('/user', {
+          headers: {
+            Authorization: `Bearer ${this.accessToken}`,
+          },
+        });
+
+        this.authenticated = false;
+
+        localStorage.removeItem('access_token');
+
+        location.hash = '/signup';
+      } catch (error: any) {
+        console.log(error);
+      }
+
+      loading.stop();
     },
 
     async signIn(): Promise<void> {
