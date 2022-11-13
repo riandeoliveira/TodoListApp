@@ -3,9 +3,9 @@
     <div class="card">
       <h1 class="title">Crie sua conta</h1>
       <form class="form">
-        <q-input v-model="fieldData.signUp.name" label="Nome" dark />
-        <q-input v-model="fieldData.signUp.email" label="E-mail" dark />
-        <q-input v-model="fieldData.signUp.password" label="Senha" dark />
+        <q-input v-model="fieldData.signUp.name" type="text" label="Nome" dark />
+        <q-input v-model="fieldData.signUp.email" type="email" label="E-mail" dark />
+        <q-input v-model="fieldData.signUp.password" type="password" label="Senha" dark />
       </form>
       <q-btn
         :loading="loading.isLoading"

@@ -8,13 +8,7 @@ export interface TodoState {
 
 export const todoListStore = defineStore({
   id: 'todoList',
-  state: (): TodoState[] => [
-    { id: 'kjashfsdasdk', name: 'Lavar a louça', completed: false },
-    { id: 'kjashfsdassdasdsadk', name: 'Lavar a louça', completed: false },
-    { id: 'kjashfsdkasdasd', name: 'Lavar a louça', completed: true },
-    { id: 'kjashfsdkd', name: 'Lavar a louça', completed: false },
-    { id: 'kjashfsdkasd', name: 'Lavar a louça', completed: true },
-  ],
+  state: (): TodoState[] => [],
   actions: {
     add(name: string): void {
       const todo: TodoState = {

@@ -3,13 +3,23 @@
     <div class="card">
       <h1 class="title">Entre na sua conta</h1>
       <form class="form">
-        <q-input v-model="userData.email" label="E-mail" dark />
-        <q-input v-model="userData.password" label="Senha" dark />
+        <q-input
+          v-model="fieldData.signIn.email"
+          type="email"
+          label="E-mail"
+          dark
+        />
+        <q-input
+          v-model="fieldData.signIn.password"
+          type="password"
+          label="Senha"
+          dark
+        />
       </form>
       <q-btn
-        :loading="loading[0]"
+        :loading="loading.isLoading"
         color="primary"
-        @click="simulateProgress(0)"
+        @click="user.signIn()"
         label="Entrar"
         type="submit"
       />
@@ -22,19 +32,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { fieldDataStore } from 'src/stores/fieldDataStore';
+import { loadingStore } from 'src/stores/loadingStore';
+import { userStore } from 'src/stores/userStore';
 
-const userData = ref({ email: '', password: '' });
-
-const loading = ref([false]);
-
-function simulateProgress(number: number) {
-  loading.value[number] = true;
-
-  setTimeout(() => {
-    loading.value[number] = false;
-  }, 3000);
-}
+const fieldData = fieldDataStore();
+const loading = loadingStore();
+const user = userStore();
 </script>
 
 <style scoped lang="scss">
