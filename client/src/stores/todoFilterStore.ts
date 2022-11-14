@@ -49,7 +49,7 @@ export const todoFilterStore = defineStore({
       return this.$state.find((item) => item.selected)?.option();
     },
 
-    select(todoFilter: TodoStateFilter) {
+    select(todoFilter: TodoStateFilter): void {
       this.$state.map((state) => (state.selected = false));
       this.$state[todoFilter.id].selected = true;
     },

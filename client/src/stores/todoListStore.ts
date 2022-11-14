@@ -94,7 +94,7 @@ export const todoListStore = defineStore({
     },
 
     sortByAlphabeticalOrder(): TodoState[] {
-      return this.$state.sort((a, b) => a.name.localeCompare(b.name));
+      return [...this.$state].sort((a, b) => a.name.localeCompare(b.name));
     },
 
     sortByCompletedTodos(): TodoState[] {

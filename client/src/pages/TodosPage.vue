@@ -5,7 +5,9 @@
       <FilterModal v-if="toggleOption.filterModal" />
       <div class="todo-list" :class="toggleOption.filterModal ? 'opac' : ''">
         <TodoBox
-          v-for="todo in todoFilter.getSelectedFilter()"
+          v-for="todo in toggleOption.searchTodoField
+            ? todoList.search(fieldData.searchTodo)
+            : todoFilter.getSelectedFilter()"
           :key="todo.id"
           :id="todo.id"
           :name="todo.name"
@@ -47,7 +49,9 @@ async function handleUserAuth() {
   if (!user.authenticated) location.hash = '/signup';
 }
 
-onMounted(() => handleUserAuth());
+onMounted(() => {
+  handleUserAuth();
+});
 </script>
 
 <style lang="scss">
