@@ -1,12 +1,12 @@
 <template>
   <svg
-    :width="size"
-    :height="size"
+    :width="props.size"
+    :height="props.size"
     :viewBox="viewBox"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <path :d="name" fill="#ffffff" />
+    <path :d="props.name" fill="#ffffff" />
   </svg>
 </template>
 

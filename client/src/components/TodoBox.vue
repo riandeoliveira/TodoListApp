@@ -3,11 +3,11 @@
   <div class="todo-container">
     <div class="check-container">
       <q-checkbox
-        v-model="completed"
+        v-model="props.completed"
         :dark="true"
         @click="todoList.complete(props.id)"
       />
-      <span class="todo-name">{{ name }}</span>
+      <span class="todo-name">{{ props.name }}</span>
     </div>
     <IconBase
       :name="trash_can"
