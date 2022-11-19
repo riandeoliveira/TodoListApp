@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { TodoState, todoListStore } from './todoListStore';
+import { toggleElementStore } from './toggleElementStore';
 
 export interface TodoStateFilter {
   id: number;
@@ -9,6 +10,7 @@ export interface TodoStateFilter {
 }
 
 const todoList = todoListStore();
+const toggleElement = toggleElementStore();
 
 export const todoFilterStore = defineStore({
   id: 'todoFilters',
@@ -52,6 +54,10 @@ export const todoFilterStore = defineStore({
     select(todoFilter: TodoStateFilter): void {
       this.$state.map((state) => (state.selected = false));
       this.$state[todoFilter.id].selected = true;
+
+      setTimeout(() => {
+        toggleElement.toggle('filterModal');
+      }, 100);
     },
   },
 });
