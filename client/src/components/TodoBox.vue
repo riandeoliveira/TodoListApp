@@ -3,7 +3,7 @@
   <div class="todo-container">
     <div class="check-container">
       <q-checkbox
-        v-model="props.completed"
+        v-model="isCompleted"
         :dark="true"
         @click="todoList.complete(props.id)"
       />
@@ -22,6 +22,7 @@
 import IconBase from './IconBase.vue';
 import { trash_can } from '../data/icons.json';
 import { todoListStore } from 'src/stores/todoListStore';
+import { ref } from 'vue';
 
 export interface TodoProps {
   id: string;
@@ -30,6 +31,8 @@ export interface TodoProps {
 }
 
 const props = defineProps<TodoProps>();
+
+const isCompleted = ref(props.completed);
 
 const todoList = todoListStore();
 </script>
