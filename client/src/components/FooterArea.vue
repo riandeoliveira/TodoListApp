@@ -32,8 +32,6 @@ const handleAddTodoField = (): void => {
       'input[type=text]'
     ) as HTMLInputElement;
 
-    console.log(addTodoField);
-
     addTodoField?.focus();
   }, 100);
 

@@ -3,14 +3,29 @@
     <div class="card">
       <h1 class="title">Crie sua conta</h1>
       <form class="form">
-        <q-input v-model="fieldData.signUp.name" type="text" label="Nome" dark />
-        <q-input v-model="fieldData.signUp.email" type="email" label="E-mail" dark />
-        <q-input v-model="fieldData.signUp.password" type="password" label="Senha" dark />
+        <q-input
+          v-model="fieldData.signUp.name"
+          type="text"
+          label="Nome"
+          dark
+        />
+        <q-input
+          v-model="fieldData.signUp.email"
+          type="email"
+          label="E-mail"
+          dark
+        />
+        <q-input
+          v-model="fieldData.signUp.password"
+          type="password"
+          label="Senha"
+          dark
+        />
       </form>
       <q-btn
         :loading="loading.isLoading"
         color="primary"
-        @click="user.signUp()"
+        @click="handleUserValidation"
         label="Cadastrar"
         type="submit"
       />
@@ -23,6 +38,7 @@
 </template>
 
 <script setup lang="ts">
+import { useQuasar } from 'quasar';
 import { fieldDataStore } from 'src/stores/fieldDataStore';
 import { loadingStore } from 'src/stores/loadingStore';
 import { userStore } from 'src/stores/userStore';
@@ -30,6 +46,32 @@ import { userStore } from 'src/stores/userStore';
 const fieldData = fieldDataStore();
 const loading = loadingStore();
 const user = userStore();
+const $q = useQuasar();
+
+function handleUserValidation() {
+  const name = fieldData.signUp.name;
+  const email = fieldData.signUp.email;
+  const password = fieldData.signUp.password;
+
+  if (
+    name.trim().length === 0 ||
+    email.trim().length === 0 ||
+    password.trim().length === 0
+  ) {
+    $q.notify({
+      type: 'negative',
+      message: 'Por favor, preencha todos os campos!',
+      position: 'top-right',
+    });
+  } else if (password.length < 8 || password.length > 20) {
+    $q.notify({
+      type: 'negative',
+      message:
+        'Senha inválida! Sua senha precisa estar entre 8 e 20 caracteres.',
+      position: 'top-right',
+    });
+  } else user.signUp();
+}
 </script>
 
 <style scoped lang="scss">
