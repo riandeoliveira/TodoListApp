@@ -23,6 +23,7 @@ import IconBase from './IconBase.vue';
 import { trash_can } from '../data/icons.json';
 import { todoListStore } from 'src/stores/todoListStore';
 import { ref } from 'vue';
+import { fieldDataStore } from 'src/stores/fieldDataStore';
 
 export interface TodoProps {
   id: string;
@@ -35,6 +36,7 @@ const props = defineProps<TodoProps>();
 const isCompleted = ref(props.completed);
 
 const todoList = todoListStore();
+const fieldData = fieldDataStore();
 </script>
 
 <style scoped lang="scss">

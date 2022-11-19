@@ -35,8 +35,6 @@ export const todoListStore = defineStore({
 
         this.$state.push(todo);
       } catch (error: unknown) {
-        alert('Não foi possível adicionar uma nova tarefa.');
-
         console.log(error);
       }
     },
